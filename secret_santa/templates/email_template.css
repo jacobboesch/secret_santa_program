@@ -1,0 +1,25 @@
+.giftee {
+    font-family: "Arial Black", Arial, Helvetica, sans-serif;
+    
+    width:100%;
+    
+    margin: 0 auto;
+    text-align: center;
+
+    color:#00b32c;
+    font-size:45px;
+    font-weight: bold;
+    -webkit-animation:colorchange 2s infinite alternate;
+}
+
+@-webkit-keyframes colorchange {
+    0% {
+        
+        color: #00b32c;
+    }
+    
+    50% {
+        
+        color: #ff0012;
+    }
+}
