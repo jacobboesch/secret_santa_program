@@ -11,9 +11,9 @@ I've made this program a REST API, just incase I wanted to make
 a front end for it in the future. 
 
 Required Environment Variables:
-SECRET_SANTA_DB_CONNECTION_STRING
-SECRET_SANTA_SENDER_EMAIL
-SECRET_SANTA_SENDER_PASSWORD
+* SECRET_SANTA_DB_CONNECTION_STRING
+* SECRET_SANTA_SENDER_EMAIL
+* SECRET_SANTA_SENDER_PASSWORD
 
 Setup:
 
@@ -27,6 +27,7 @@ To run the program use the following command:
 
 python3 app.py
 
+Additional Notes:
 
 This is a working prototype of the product.
 The program works, and can be hosted on your local machine. 
@@ -43,6 +44,8 @@ with a persons account.
 6. Design and create a front end for the product using jQuery and Semantic UI
 7. Register a domain name, and obtain and SSL certificate using letsencrypt
 8. Document endpoints using swagger
+9. Create database migration scripts using alembic
+10. Create integration tests using behave
 
 Other possible future additions:
 - Add a rule to not allow people to get the same person from the previous year
