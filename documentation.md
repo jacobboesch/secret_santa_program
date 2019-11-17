@@ -14,6 +14,7 @@ Returns a list of participants from the database
 
 <details>
     <summary> Click to see Sample Output </summary>
+    
 ```json
 {
     "participants": [
@@ -36,6 +37,7 @@ Returns a list of participants from the database
     ]
 }
 ```
+
 </details>
 
 # `GET /participant/{id}`
@@ -51,6 +53,7 @@ Gets a specific participant from the database
 
 <details>
     <summary> Click to see sample output </summary>
+    
 ```json
 {
     "id": 1,
@@ -61,6 +64,7 @@ Gets a specific participant from the database
     "is_selected": false
 }
 ```
+
 </details>
 
 # `POST /participant`
@@ -76,6 +80,7 @@ Creates a new participant in the database
 
 <details>
     <summary> Click to see sample input </summary>
+    
 ```json
 {
     "name": "Person1",
@@ -83,12 +88,14 @@ Creates a new participant in the database
     "household": 1
 }
 ```
+
 </details>
 
 STATUS CODE: 201 
 
 <details>
     <summary> Click to see sample output </summary>
+    
 ```json
 {
     "success": true,
@@ -111,6 +118,7 @@ Updates a participant in the Database
 
 <details>
     <summary> Click to see sample input </summary>
+    
 ```json
 {
     "name": "Person1",
@@ -124,6 +132,7 @@ STATUS CODE: 200
 
 <details>
     <summary> Click to see sample output </summary>
+    
 ```json
 {
     "success": true,
@@ -146,6 +155,7 @@ STATUS CODE: 200
 
 <details>
     <summary> Click to see sample output </summary>
+    
 ```json
 {
     "success": true,
@@ -168,10 +178,11 @@ STATUS CODE: 200
 
 <details>
     <summary> Click to see sample output </summary>
+    
 ```json
 {
     "success": true,
-    "message": "Successfully deleted entry in table participants"
+    "message": "Success"
 }
 ```
 </details>
