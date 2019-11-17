@@ -4,15 +4,16 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from secret_santa.database import Base
-# must be imported so that it can create the database schema
+
 
 
 # making the scope session ensures that it will only be ran once though the
 # program. Once the program terminates it will run the code after the yield
 @pytest.fixture(scope='session')
 def db_connection():
-    engine = create_engine("sqlite:///:memory:", convert_unicode=True)
+    engine = create_engine("sqlite:///:memory:")
     Base.metadata.bind = engine
+    # must be imported so that it can create the database schema
     import secret_santa.model
     Base.metadata.create_all(bind=engine)
     connection = engine.connect()

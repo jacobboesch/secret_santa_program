@@ -44,12 +44,12 @@ def test_create(session, json_input_data, participant_service):
 
 def test_update(session, json_input_data,
                 sample_participant, participant_service):
-    response = participant_service.update(
-        {"name": "New", "email": "new@example.com", "household": 1},
-        sample_participant.id
-    )
-    print(response.json_data)
-    assert(response.status_code == 200)
+    with patch('secret_santa.repository.Repository.db_session', new=session):
+        response = participant_service.update(
+            {"name": "New", "email": "new@example.com", "household": 1},
+            sample_participant.id
+        )
+        assert(response.status_code == 200)
 
 
 def test_delete(session, sample_participant, participant_service):

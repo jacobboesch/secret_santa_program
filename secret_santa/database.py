@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-import os
+import secret_santa.config as config
 
 # Create an engine from environment.
-connection_string = os.environ.get("SECRET_SANTA_DB_CONNECTION_STRING")
+connection_string = config.CONNECTION_STRING
 engine = create_engine(connection_string, convert_unicode=True)
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,

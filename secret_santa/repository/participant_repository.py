@@ -44,3 +44,19 @@ class ParticipantRepository(Repository):
                         .filter(Participant.giftee == None) \
                         .order_by(func.random()).first()
         return participant
+
+    def reset_giftees(self):
+        self.db_session.query(Participant) \
+            .filter(Participant.giftee != None) \
+            .update({"giftee": None})
+
+    def unselect_all(self):
+        self.db_session.query(Participant) \
+            .filter(Participant.is_selected == True) \
+            .update({"is_selected": False})
+
+    def retrieve_all_with_giftee(self):
+        participants = self.db_session.query(Participant) \
+                        .filter(Participant.giftee != None) \
+                        .all()
+        return participants

@@ -1,2 +1,3 @@
 from secret_santa.controller_service.crud_service import CRUDService
 from secret_santa.controller_service.participant_service import ParticipantService
+from secret_santa.controller_service.secret_santa_service import SecretSantaService

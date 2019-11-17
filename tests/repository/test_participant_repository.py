@@ -82,3 +82,36 @@ def test_retrieve_by_household_without_giftee(
         assert(participant is not None)
         assert(participant.household == 2)
         assert(participant.name == "person3")
+
+
+def test_reset_giftees(
+        participant_repository, session, participant_sample_data):
+    with patch('secret_santa.repository.repository.Repository.db_session',
+               new=session):
+        session.query(Participant).update({"giftee": 1})
+        participant_repository.reset_giftees()
+        count = session.query(Participant) \
+            .filter(Participant.giftee != None) \
+            .count()
+        assert(count == 0)
+
+
+def test_unselect_all(
+        participant_repository, session, participant_sample_data):
+    with patch('secret_santa.repository.repository.Repository.db_session',
+               new=session):
+        session.query(Participant).update({"is_selected": True})
+        participant_repository.unselect_all()
+        count = session.query(Participant) \
+            .filter(Participant.is_selected == True) \
+            .count()
+        assert(count == 0)
+
+
+def test_retrieve_all_with_giftee(
+        participant_repository, session, participant_sample_data):
+    with patch('secret_santa.repository.repository.Repository.db_session',
+               new=session):
+        session.query(Participant).update({"giftee": 1})
+        participants = participant_repository.retrieve_all_with_giftee()
+        assert(len(participants) == 5)
