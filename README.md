@@ -48,3 +48,5 @@ Other possible future additions:
 - Add a rule to not allow people to get the same person from the previous year
 - Add support for custom exclusions
 - Add the ability to add whish lists to the email
+- Update CRUDService.py, write more extensive unit tests, add generic method
+for create method. 

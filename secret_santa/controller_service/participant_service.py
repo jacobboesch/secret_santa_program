@@ -1,13 +1,12 @@
 # used to preform CRUD operations on the participant table
 from secret_santa.controller_service import CRUDService
-from secret_santa.model import ParticipantInput
 from secret_santa.model import Participant
 
 
 class ParticipantService(CRUDService):
 
     def __init__(self):
-        super().__init__(Participant, ParticipantInput)
+        super().__init__(Participant)
 
     def get_model_json_object(self, model):
         return {
@@ -19,9 +18,9 @@ class ParticipantService(CRUDService):
             "is_selected": model.is_selected
         }
 
-    def get_table_model(self, input_object):
-        # TODO add error checking for invalid email addresses and other input
-        # For now I'll assume that all input is valid
+    def get_table_model(self, json_input):
         model = self.table(
-            input_object.name, input_object.household, input_object.email)
+            json_input.get("name"),
+            json_input.get("household"),
+            json_input.get("email"))
         return model

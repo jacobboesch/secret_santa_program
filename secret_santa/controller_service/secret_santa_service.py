@@ -34,7 +34,7 @@ class SecretSantaService():
         # Change number after statistical anyalysis, needs to be the
         # maximum number of times we attempt this algorithm before
         # stating that the program failed
-        max_error_count = 170
+        max_error_count = 200
         error_count = 0
         num_people = self.repo.num_people_without_giftee()
         while(num_people > 0):
@@ -48,9 +48,7 @@ class SecretSantaService():
                 .retrieve_by_household_without_giftee(house_id)
             giftee = self.repo \
                 .retrieve_random_not_selected_not_in_household(house_id)
-            if (
-                giftee is None
-            ):
+            if (giftee is None):
                 error_count = error_count + 1
                 self._reset_giftees_and_selected()
                 if(error_count >= max_error_count):
@@ -70,7 +68,7 @@ class SecretSantaService():
             for participant in participants:
                 giftee = self.repo.retrieve_by_id(participant.giftee)
                 sender = EmailSender(
-                    giftee.email,
+                    participant.email,
                     config.EMAIL_SUBJECT,
                     body.format(
                         css=style,

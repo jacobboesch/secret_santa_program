@@ -8,17 +8,14 @@ import traceback
 
 
 class CRUDService():
-    def __init__(self, table, input_object_class):
+    def __init__(self, table):
         self.table = table
         self.repo = Repository(table)
-        self.input_object_class = input_object_class
 
     def create(self, json_input):
         try:
-            input_object = self._get_input_object(json_input)
-            model = self.get_table_model(input_object)
+            model = self.get_table_model(json_input)
             model = self.repo.create_and_return(model)
-
             if model is None:
                 raise ErrorException(
                     "Failed to create entry in table: {table_name}"
@@ -31,18 +28,16 @@ class CRUDService():
         except Exception:
             traceback.print_exc()
             response = ErrorResponse(500, "Unknown Error")
-
         return response
-    ###
-    # TODO change this method so that it only needs the fields that are
-    # to be updated instead of needing everything
-    ###
 
     def update(self, json_input, id):
         try:
-            input_object = self._get_input_object(json_input)
-            model = self.get_table_model(input_object)
-            model.id = id
+            current_model = self.repo.retrieve_by_id(id)
+            if(current_model is None):
+                raise ErrorException(
+                    "Entry with id {id} does not exist".format(id=id), 400)
+
+            model = self._get_updated_table_model(json_input, current_model)
             model = self.repo.update_and_return(model)
 
             if model is None:
@@ -77,23 +72,15 @@ class CRUDService():
             response = ErrorResponse(500, "Unknown error")
         return response
 
-    def _get_input_object(self, json_input):
-        input_object = self.input_object_class()
-        input_object.init_from_json(json_input)
-
-        return input_object
-
     def retrieve_all(self):
         models = self.repo.retrieve_all()
-
         return self._retrieve_multiple(models)
 
     def retrieve_by_id(self, id):
         try:
             model = self.repo.retrieve_by_id(id)
             model_object = self.get_model_json_object(model)
-            output_data = model_object
-            response = Response(200, output_data)
+            response = Response(200, model_object)
         except ErrorException as e:
             response = ErrorResponse(e.status_code, e.message)
         except Exception:
@@ -104,11 +91,9 @@ class CRUDService():
 
     def _retrieve_multiple(self, models):
         try:
-            table_name = self.table.__tablename__
             model_objects = list(map(lambda x: self.get_model_json_object(x),
                                      models))
-            output_data = {table_name: model_objects}
-            response = Response(200, output_data)
+            response = Response(200, model_objects)
         except ErrorException as e:
             response = ErrorResponse(e.status_code, e.message)
         except Exception:
@@ -117,10 +102,22 @@ class CRUDService():
 
         return response
 
-    @abstractmethod
-    def get_table_model(self, input_object):
-        pass
+    @abstractmethod 
+    def get_table_model(self, json_input):
+        pass 
 
     @abstractmethod
     def get_model_json_object(self, model):
         pass
+    ###
+    # override in child class if the json_input key's and values are not
+    # exactly the same as the table model or if you don't want to be able to
+    # change everyting in the entry
+    ###
+
+    def _get_updated_table_model(self, json_input, current_model):
+        model = current_model
+        for key, value in model.__dict__.items():
+            if(key in json_input.keys()):
+                model.__dict__[key] = json_input.get(key)
+        return model

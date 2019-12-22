@@ -48,7 +48,16 @@ def algorithm(repo):
         house_id = repo.retrieve_most_populated_household_id_without_giftee()
         current_person = repo.retrieve_by_household_without_giftee(house_id)
         giftee = repo.retrieve_random_not_selected_not_in_household(house_id)
-        if (giftee is None):
+        if (giftee is None
+                or current_person.name == "Grandma" and giftee.name == "Jacob"
+                or current_person.name == "Grandpa" and giftee.name == "Jacob"
+                or current_person.name == "Bill" and giftee.name == "Grandpa"
+                or current_person.name == "Marianne" and giftee.name == "Bill"
+                or current_person.name == "Jeremy" and giftee.name == "Candra"
+                or current_person.name == "Julianne" and giftee.name == "Grandma"
+                or current_person.name == "Candra" and giftee.name == "Jeremy"
+                or current_person.name == "Grandpa" and giftee.name == "Marianne"
+                or current_person.name == "Grandma" and giftee.name == "Ange"):
             raise Exception("Failed to find a giftee")
         current_person.giftee = giftee.id
         giftee.is_selected = True
@@ -68,7 +77,7 @@ def add_test_data(repo):
     repo.create(Participant("Candra", 3, "test"))
     repo.create(Participant("Jessica", 4, "test"))
     repo.create(Participant("James", 4, "test"))
-    repo.create(Participant("Julie", 4, "test"))
+    repo.create(Participant("Juileanne", 4, "test"))
     repo.create(Participant("Ange", 4, "test"))
 
 

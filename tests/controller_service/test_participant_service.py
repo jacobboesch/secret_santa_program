@@ -62,7 +62,7 @@ def test_retrieve_all(session, sample_participant, participant_service):
     with patch('secret_santa.repository.Repository.db_session', new=session):
         response = participant_service.retrieve_all()
         assert(response.status_code == 200)
-        assert(len(response.data["participants"]) > 0)
+        assert(len(response.data) > 0)
 
 
 def test_retrieve_by_id(session, participant_service, sample_participant):
