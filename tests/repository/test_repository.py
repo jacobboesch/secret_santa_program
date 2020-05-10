@@ -29,6 +29,7 @@ def test_create(repo):
     assert(participant.giftee is None)
 
 
+
 def test_retrieve_all(repo, add_test_data):
     participants = repo.retrieve_all()
     assert(len(participants) > 0)

@@ -20,9 +20,17 @@ class EmailSender():
         self.message["To"] = self.to
         self.message["Subject"] = subject
         self.bc = bc
-        self.message.attach(MIMEText(body, "html"))
+        if(body is not None):
+            self.message.attach(MIMEText(body, "html"))
         if(attachment is not None):
             self._attach_file()
+
+    def set_to(self, recipient):
+        self.to = recipient
+        self.message["To"] = recipient
+
+    def set_body(self, body):
+        self.message.attach(MIMEText(body, "html"))
 
     def _attach_file(self):
         try:
@@ -43,11 +51,10 @@ class EmailSender():
         try:
             text = self.message.as_string()
             context = ssl.create_default_context()
-            with smtplib.SMTP_SSL(
+            with smtplib.SMTP(
                                   config.SMTP_SERVER,
-                                  config.PORT,
-                                  context=context) as server:
-                server.login(config.SENDER_EMAIL, config.SENDER_PASSWORD)
+                                  config.PORT) as server:
+                #server.login(config.SENDER_EMAIL, config.SENDER_PASSWORD)
                 server.sendmail(config.SENDER_EMAIL, self.to, text)
         except Exception:
             traceback.print_exc()

@@ -4,9 +4,11 @@ from secret_santa.response import ErrorException
 from secret_santa.util.email_sender import EmailSender
 import traceback
 import secret_santa.config as config
+import multiprocessing as mp
 
 
 class SecretSantaService():
+    repo = None
 
     def __init__(self):
         self.repo = ParticipantRepository()
@@ -15,8 +17,7 @@ class SecretSantaService():
     # returns a response object
     def start(self):
         try:
-            self._reset_giftees_and_selected()
-            self._select_giftees()
+            self.repo.update_giftees()
             self._email_participants()
         except ErrorException as e:
             return ErrorResponse(e.status_code, e.message)
@@ -62,21 +63,40 @@ class SecretSantaService():
                 self.repo.update(giftee)
             num_people = self.repo.num_people_without_giftee()
 
+
+    def _convert_participants_to_dict(self,list_participants):
+        participant_dictionary = dict()
+        for participant in list_participants:
+            participant_dictionary[participant.id] = participant
+        return participant_dictionary
+    
+    def _email_participant(self, participant_dict, participant, body, style):
+        giftee = participant_dict[participant.giftee]
+        sender = EmailSender(
+            giftee.email,
+            config.EMAIL_SUBJECT,
+            body.format(
+                css=style,
+                name=participant.name,
+                giftee_name=giftee.name))
+        sender.send()
+
+
     def _email_participants(self):
         body = self._get_file_contents(config.EMAIL_TEMPLATE)
         style = self._get_file_contents(config.EMAIL_TEMPLATE_STYLE)
         participants = self.repo.retrieve_all_with_giftee()
+        participant_dict = self._convert_participants_to_dict(participants)
         try:
-            for participant in participants:
-                giftee = self.repo.retrieve_by_id(participant.giftee)
-                sender = EmailSender(
-                    giftee.email,
-                    config.EMAIL_SUBJECT,
-                    body.format(
-                        css=style,
-                        name=participant.name,
-                        giftee_name=giftee.name))
-                sender.send()
+            pool = mp.Pool(mp.cpu_count())
+            [pool.apply(
+                self._email_participant,
+                args=(
+                    participant_dict,
+                    participant,
+                    body,
+                    style)
+            ) for participant in participants]
         except ErrorException as e:
             raise e
         except Exception:
