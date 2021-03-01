@@ -27,42 +27,6 @@ class SecretSantaService():
 
         return SuccessResponse("Success")
 
-    def _reset_giftees_and_selected(self):
-        self.repo.reset_giftees()
-        self.repo.unselect_all()
-
-    def _select_giftees(self):
-        # Change number after statistical anyalysis, needs to be the
-        # maximum number of times we attempt this algorithm before
-        # stating that the program failed
-        max_error_count = 170
-        error_count = 0
-        num_people = self.repo.num_people_without_giftee()
-        while(num_people > 0):
-            ###
-            # the house id is the id of the househod that has the most number
-            # of people wihout a giftee
-            ###
-            house_id = self.repo \
-                .retrieve_most_populated_household_id_without_giftee()
-            current_person = self.repo \
-                .retrieve_by_household_without_giftee(house_id)
-            giftee = self.repo \
-                .retrieve_random_not_selected_not_in_household(house_id)
-            if (
-                giftee is None
-            ):
-                error_count = error_count + 1
-                self._reset_giftees_and_selected()
-                if(error_count >= max_error_count):
-                    raise ErrorException("Failed to select giftees", 500)
-            else:
-                current_person.giftee = giftee.id
-                giftee.is_selected = True
-                self.repo.update(current_person)
-                self.repo.update(giftee)
-            num_people = self.repo.num_people_without_giftee()
-
 
     def _convert_participants_to_dict(self,list_participants):
         participant_dictionary = dict()
@@ -88,6 +52,7 @@ class SecretSantaService():
         participants = self.repo.retrieve_all_with_giftee()
         participant_dict = self._convert_participants_to_dict(participants)
         try:
+            # email each participant in parallel upto the max cpu count
             pool = mp.Pool(mp.cpu_count())
             [pool.apply(
                 self._email_participant,
