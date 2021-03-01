@@ -3,6 +3,7 @@ from secret_santa.model import Participant
 from sqlalchemy import func
 import random
 
+
 class ParticipantRepository(Repository):
 
     def __init__(self):
@@ -15,7 +16,7 @@ class ParticipantRepository(Repository):
             return num_people[0]
         else:
             return None
-            
+
     def retrieve_all_with_giftee(self):
         participants = self.db_session.query(Participant) \
                         .filter(Participant.giftee != None) \
@@ -26,7 +27,6 @@ class ParticipantRepository(Repository):
         matches = []
         options = []
         taken_giftees = set()
-        num_participants = 0
         sql = "SELECT P.id AS id, COUNT(G.id) AS num_possible_giftees, \
                 group_concat(G.id) AS possible_giftees \
                FROM participants AS P, participants AS G \
@@ -36,12 +36,11 @@ class ParticipantRepository(Repository):
                ORDER BY num_possible_giftees ASC"
 
         result_set = self.db_session.execute(sql)
-        
+
         for row in result_set:
             possible_giftees = set(map(int,row.possible_giftees.split(",")))
             options.append((row.id, possible_giftees))
 
-        
         fail_count = 0
         # algorhim only gets it right about 77% of the time on the first try
         # so I'll allow for a maximum of 8 attemps to prevent an infinte loop
@@ -55,7 +54,7 @@ class ParticipantRepository(Repository):
                         raise Exception("Failed to find a giftee")
                     random.shuffle(possible_giftees)
                     matches.append({
-                        "id": option[0], 
+                        "id": option[0],
                         "giftee": possible_giftees[0]
                         }
                     )
@@ -63,7 +62,7 @@ class ParticipantRepository(Repository):
 
                 if(len(matches) != len(options)):
                     raise Exception("Failed")
-                else: 
+                else:
                     break
             except:
                 fail_count += 1

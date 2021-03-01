@@ -14,9 +14,7 @@ class ParticipantService(CRUDService):
             "id": model.id,
             "name": model.name,
             "household": model.household,
-            "email": model.email,
-            "giftee": model.giftee,
-            "is_selected": model.is_selected
+            "email": model.email
         }
 
     def get_table_model(self, input_object):

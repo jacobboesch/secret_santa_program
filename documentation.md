@@ -22,17 +22,13 @@ Returns a list of participants from the database
             "id": 1,
             "name": "Person1",
             "household": 1,
-            "email": "person1@example.com",
-            "giftee": null,
-            "is_selected": false
+            "email": "person1@example.com"
         },
         {
             "id": 2,
             "name": "Person2",
             "household": 2,
-            "email": "person2@example.com",
-            "giftee": null,
-            "is_selected": false
+            "email": "person2@example.com"
         }
     ]
 }
@@ -59,9 +55,7 @@ Gets a specific participant from the database
     "id": 1,
     "name": "Person1",
     "household": 1,
-    "email": "person1@example.com",
-    "giftee": null,
-    "is_selected": false
+    "email": "person1@example.com"
 }
 ```
 

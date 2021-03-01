@@ -15,13 +15,11 @@ class Participant(Base):
     # can be null since particpants arn't initilaized with a giftee
     ###
     giftee = Column(Integer, nullable=True)
-    is_selected = Column(Boolean, nullable=False)
 
-    def __init__(self, name, household, email, is_selected=False, giftee=None):
+    def __init__(self, name, household, email, giftee=None):
         self.name = name
         self.household = household
         self.email = email
-        self.is_selected = is_selected
         self.giftee = giftee
 
     def __repr__(self):

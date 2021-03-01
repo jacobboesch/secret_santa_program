@@ -25,9 +25,7 @@ def test_create(repo):
     assert(participant.name == "test_user")
     assert(participant.household == 1)
     assert(participant.email == "test@example.com")
-    assert(participant.is_selected is False)
     assert(participant.giftee is None)
-
 
 
 def test_retrieve_all(repo, add_test_data):

@@ -3,6 +3,8 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import secret_santa.config as config
 
+# TODO should really change this to a singleton design pattern instead of
+# global variables.
 # Create an engine from environment.
 connection_string = config.CONNECTION_STRING
 engine = create_engine(connection_string, convert_unicode=True)
