@@ -42,9 +42,9 @@ class EmailService():
 
     # email participants based on the selections (participant with selected giftee)
     def email_participants(self, selections):
-        body = self._get_file_contents(config.EMAIL_TEMPLATE)
-        style = self._get_file_contents(config.EMAIL_TEMPLATE_STYLE)
         try:
+            body = self._get_file_contents(config.EMAIL_TEMPLATE)
+            style = self._get_file_contents(config.EMAIL_TEMPLATE_STYLE)
             threads = []
             for selection in selections:
                 thread = EmailParticipantThread(selection, body, style)
