@@ -7,6 +7,6 @@ from secret_santa.controller.controller_functions import get_http_response
 @app.route('/email_participants', methods=['POST'])
 def email_participants():
     service = EmailService()
-    #TODO add JSON validation before sending emails
+    # TODO add JSON validation before sending emails
     response = service.email_participants(request.json)
     return get_http_response(response)

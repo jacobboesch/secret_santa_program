@@ -1,7 +1,4 @@
 # Defines Global Constants
-import os
-
-CONNECTION_STRING = os.environ.get("SECRET_SANTA_DB_CONNECTION_STRING")
 SENDER_EMAIL = "15f9412f7a0392" #os.environ.get("SECRET_SANTA_SENDER_EMAIL")
 SENDER_PASSWORD = "958db6506297b5"#os.environ.get("SECRET_SANTA_SENDER_PASSWORD")
 SMTP_SERVER = "smtp.mailtrap.io"

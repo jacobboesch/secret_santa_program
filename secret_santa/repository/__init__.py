@@ -1,2 +1,0 @@
-from secret_santa.repository.repository import Repository
-from secret_santa.repository.participant_repository import ParticipantRepository

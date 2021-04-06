@@ -1,5 +1,4 @@
 
-
 class ErrorException(Exception):
     def __init__(self, message, status_code):
         Exception.__init__(self, message)
