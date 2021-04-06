@@ -33,7 +33,8 @@ class SecretSantaService():
         for participant in list_participants:
             participant_dictionary[participant.id] = participant
         return participant_dictionary
-    
+
+
     def _email_participant(self, participant_dict, participant, body, style):
         giftee = participant_dict[participant.giftee]
         sender = EmailSender(

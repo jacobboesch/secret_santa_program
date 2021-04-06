@@ -1,5 +1,4 @@
 import smtplib
-import ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
@@ -50,11 +49,10 @@ class EmailSender():
     def send(self):
         try:
             text = self.message.as_string()
-            context = ssl.create_default_context()
             with smtplib.SMTP(
                                   config.SMTP_SERVER,
                                   config.PORT) as server:
-                #server.login(config.SENDER_EMAIL, config.SENDER_PASSWORD)
+                server.login(config.SENDER_EMAIL, config.SENDER_PASSWORD)
                 server.sendmail(config.SENDER_EMAIL, self.to, text)
         except Exception:
             traceback.print_exc()
