@@ -4,7 +4,6 @@ from os import path
 
 
 def test_config():
-    assert(config.CONNECTION_STRING is not None)
     assert(config.SENDER_EMAIL is not None)
     assert(config.SENDER_PASSWORD is not None)
     assert(config.SMTP_SERVER is not None)
